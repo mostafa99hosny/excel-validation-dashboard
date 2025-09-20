@@ -377,26 +377,131 @@ def export_with_highlights(df: pd.DataFrame, highlights: Dict[Tuple[int, str], P
 def main():
     st.set_page_config(page_title="Excel Validator", layout="wide")
 
-    # Optional RTL styling for the whole app to support Arabic
+    # Professional UI with Bootstrap, custom colors, and animation
     st.markdown(
         """
+        <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.rtl.min.css'>
+        <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css'/>
         <style>
         html, body, [class^="css"]  {
-            direction: rtl; /* Enable RTL layout */
+            direction: rtl;
+            background: #f7f8fa !important;
+            color: #111 !important;
         }
-        .stDownloadButton button { direction: rtl; }
+        .stApp {
+            background: linear-gradient(135deg, #fffbe6 0%, #f7f8fa 100%) !important;
+            color: #111 !important;
+        }
+        .main-title, .main-desc, .stSubheader, .stMarkdown h1, .stMarkdown h2, .stMarkdown h3, .stDownloadButton button, .stButton > button, .stAlert, .stInfo, .stSuccess, .stError, .stDataFrame, .block-container, .stFileUploader, .stMarkdown p, .stMarkdown ul, .stMarkdown li, .stMarkdown span, .stMarkdown div {
+            color: #111 !important;
+        }
+        .stAlert, .stInfo, .stSuccess, .stError, .stNotification, .stNotificationContent, .stNotificationIcon, .stNotificationText, .stNotificationBody, .stNotificationMessage, .stNotificationContent *, .stNotification *, .stInfo *, .stError *, .stSuccess * {
+            color: #111 !important;
+        }
+        /* Keep background and other styles as before */
+        .main-title {
+            font-family: 'Cairo', 'Tajawal', Arial, sans-serif;
+            font-weight: 900;
+            font-size: 2.5em;
+            text-shadow: 0 2px 8px #ffe06633;
+            margin-bottom: 0.5em;
+            background: linear-gradient(90deg, #FFDE21 0%, #FFD700 100%);
+            border-radius: 18px;
+            padding: 0.5em 1em;
+            box-shadow: 0 4px 32px #ffe06633;
+            display: inline-block;
+            animation: fadeInDown 1s;
+        }
+        .main-desc {
+            font-size: 1.2em;
+            margin-bottom: 1.5em;
+            animation: fadeIn 1.5s;
+        }
+        .stDownloadButton button, .stButton > button {
+            background: linear-gradient(90deg, #21a366 0%, #43c97f 100%);
+            color: #fff !important;
+            border-radius: 12px;
+            font-weight: bold;
+            border: none;
+            box-shadow: 0 4px 16px #21a36633;
+            padding: 0.75em 2em;
+            font-size: 1.1em;
+            margin-bottom: 12px;
+            transition: background 0.2s, box-shadow 0.2s, transform 0.2s;
+            letter-spacing: 0.5px;
+            animation: none !important;
+        }
+        .stDownloadButton button:hover, .stButton > button:hover {
+            background: linear-gradient(90deg, #43c97f 0%, #21a366 100%);
+            color: #fff !important;
+            box-shadow: 0 6px 24px #21a36655;
+            transform: scale(1.04);
+            animation: none !important;
+        }
+        /* Remove animation from buttons */
+        .stDownloadButton button, .stButton > button {
+            animation: none !important;
+        }
+        /* ...existing code for buttons, alerts, etc... */
         </style>
         """,
         unsafe_allow_html=True,
     )
-
-    st.title("أداة التحقق من ملف إكسل - Excel Validation Tool")
-    st.write("قم برفع ملف Excel بصيغة xlsx للتحقق من الحقول والقيم وفقًا للقواعد المحددة، ثم تنزيل ملف معدل مع إبراز الأخطاء.")
+    st.markdown('<div class="main-title animate__animated animate__fadeInDown">أداة التحقق من ملف إكسل - Excel Validation Tool</div>', unsafe_allow_html=True)
+    st.markdown('<div class="main-desc animate__animated animate__fadeIn">قم برفع ملف Excel بصيغة xlsx للتحقق من الحقول والقيم وفقًا للقواعد المحددة، ثم تنزيل ملف معدل مع إبراز الأخطاء.</div>', unsafe_allow_html=True)
 
     uploaded_file = st.file_uploader("Upload Excel file (xlsx)", type=["xlsx"])
 
+    # Custom message background below upload
+    st.markdown(
+        """
+        <div style='background: linear-gradient(90deg, #FFDE21 0%, #FFD700 100%); border-radius: 14px; padding: 1.2em; margin-bottom: 1.5em; color: #222; font-size: 1.15em; font-weight: 600; box-shadow: 0 2px 12px #ffe06655;'>
+        بعد رفع الملف، سيتم التحقق من الحقول والقيم تلقائيًا. يمكنك تنزيل ملف النتائج بعد التحقق.
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
+    # Custom CSS for Streamlit's success and error messages
+    st.markdown(
+        """
+        <style>
+        .stAlert, .stError {
+            background: linear-gradient(90deg, #ffb3b3 0%, #ffdddd 100%) !important;
+            color: #a80000 !important;
+            border-radius: 12px !important;
+            font-weight: 600 !important;
+            font-size: 1.1em !important;
+            box-shadow: 0 2px 8px #ffcccc55 !important;
+        }
+        .stSuccess {
+            background: linear-gradient(90deg, #d4fc79 0%, #96e6a1 100%) !important;
+            color: #176a00 !important;
+            border-radius: 12px !important;
+            font-weight: 600 !important;
+            font-size: 1.1em !important;
+            box-shadow: 0 2px 8px #b6e6b655 !important;
+        }
+        .stSubheader, .stMarkdown h1, .stMarkdown h2, .stMarkdown h3 {
+            color: #222 !important;
+        }
+        .stMarkdown ul, .stMarkdown li, .stMarkdown p, .stMarkdown span, .stMarkdown div {
+            color: #111 !important;
+        }
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
+
     if uploaded_file is None:
-        st.info("Please upload an Excel file to begin.")
+        st.markdown(
+            """
+            <div style='background: #f7f8fa; color: #111; border-radius: 10px; padding: 1em; font-size: 1.1em; font-weight: 600; border: 1px solid #eee; margin-bottom: 1em;'>
+            Please upload an Excel file to begin.
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
         return
 
     try:
@@ -447,7 +552,14 @@ def main():
             st.write("- " + line)
 
         if total_issues == 0:
-            st.success("No issues found. Your file looks good!")
+            st.markdown(
+                """
+                <div style='color: #21a366; font-weight: bold; font-size: 1.1em; border-radius: 12px; padding: 0.7em 1em;'>
+                No issues found. Your file looks good!
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
 
         # Export with highlights and provide download
         try:
@@ -461,9 +573,47 @@ def main():
         except Exception as e:
             st.error(f"Error while generating the Excel file: {e}")
 
-        # Show a preview table
-        st.subheader("Preview (first 200 rows)")
-        st.dataframe(out_df.head(200), use_container_width=True)
+        # Show a styled preview table (Excel-like)
+        st.subheader("Preview (all rows)")
+
+        def highlight_excel(row):
+            row_styles = []
+            for col in out_df.columns:
+                key = (row.name, col)
+                if key in highlights:
+                    row_styles.append('background-color: #FFDE21; color: #111; border: 1px solid #bdbdbd;')
+                else:
+                    row_styles.append('background-color: #fff; color: #111; border: 1px solid #bdbdbd;')
+            return row_styles
+
+        styled = (
+            out_df.style
+            .apply(highlight_excel, axis=1)
+            .set_table_styles([
+                {'selector': 'th', 'props': [
+                    ('background-color', '#21a366'),
+                    ('color', '#fff'),
+                    ('font-weight', 'bold'),
+                    ('border', '1px solid #bdbdbd'),
+                    ('text-align', 'center')
+                ]},
+                {'selector': 'td', 'props': [
+                    ('border', '1px solid #bdbdbd'),
+                    ('text-align', 'center')
+                ]},
+                {'selector': 'table', 'props': [
+                    ('background-color', '#fff'),
+                    ('border-collapse', 'collapse'),
+                    ('font-family', 'Segoe UI, Arial, sans-serif'),
+                    ('font-size', '1em')
+                ]}
+            ])
+            .set_properties(**{'text-align': 'center'})
+        )
+        st.markdown(
+            styled.to_html(escape=False, index=False),
+            unsafe_allow_html=True
+        )
     else:
         st.info("Choose a check to run using the buttons above.")
 
