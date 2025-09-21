@@ -3,6 +3,7 @@
   "packages": {
     "python": "3.12"
   },
+  "buildAptPackages": ["build-essential", "libssl-dev"],
   "steps": {
     "install": {
       "commands": [
