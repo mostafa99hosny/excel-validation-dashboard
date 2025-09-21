@@ -7,7 +7,8 @@
   "steps": {
     "install": {
       "commands": [
-        "pip install -r requirements.txt"
+        "cp /app/requirements.txt /tmp/requirements.txt || echo 'requirements.txt not found in /app'",
+        "pip install -r /tmp/requirements.txt"
       ]
     }
   },
