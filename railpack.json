@@ -1,0 +1,27 @@
+{
+  "$schema": "https://schema.railpack.com",
+  "packages": {
+    "python": "3.12"
+  },
+  "steps": {
+    "install": {
+      "inputs": [
+        {
+          "local": true,
+          "include": ["requirements.txt", "app.py"]
+        }
+      ],
+      "commands": [
+        "pip install -r requirements.txt"
+      ]
+    }
+  },
+  "deploy": {
+    "inputs": [
+      {
+        "step": "install"
+      }
+    ],
+    "startCommand": "streamlit run app.py --server.address 0.0.0.0 --server.port $PORT --server.headless true --server.enableCORS false"
+  }
+}
