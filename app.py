@@ -443,6 +443,22 @@ def main():
             animation: none !important;
         }
         /* ...existing code for buttons, alerts, etc... */
+        .stSuccess {
+            background: #111 !important;
+            color: #21a366 !important;
+            border-radius: 12px !important;
+            font-weight: 700 !important;
+            font-size: 1.5em !important;
+            box-shadow: 0 2px 8px #b6e6b655 !important;
+        }
+        .stError {
+            background: #111 !important;
+            color: #ff4b4b !important;
+            border-radius: 12px !important;
+            font-weight: 700 !important;
+            font-size: 1.5em !important;
+            box-shadow: 0 2px 8px #ffcccc55 !important;
+        }
         </style>
         """,
         unsafe_allow_html=True,
@@ -525,6 +541,19 @@ def main():
     do_mand = col2.button("Check Mandatory Fields")
     do_date = col3.button("Check Date Format")
     do_all = col4.button("Check All")
+
+    # Add button to sum asset values (final_value column)
+    col_sum, _ = st.columns([1, 3])
+    if col_sum.button("Sum Asset Values"):
+        if "final_value" in df.columns:
+            total = pd.to_numeric(df["final_value"], errors="coerce").sum()
+            st.markdown(f"""
+            <div style='color: #111; font-weight: bold; font-size: 2em; background: #fff; border-radius: 14px; padding: 0.7em 1em; margin-bottom: 1em; box-shadow: 0 2px 8px #b6e6b655;'>
+            Total Asset Value (sum of final_value): {total:,.2f}
+            </div>
+            """, unsafe_allow_html=True)
+        else:
+            st.error("Column 'final_value' not found in the uploaded file.")
 
     # Default outputs
     out_df = df.copy()
@@ -615,7 +644,14 @@ def main():
             unsafe_allow_html=True
         )
     else:
-        st.info("Choose a check to run using the buttons above.")
+        st.markdown(
+            """
+            <div style='background: #f7f8fa; color: #111; border-radius: 10px; padding: 1em; font-size: 1.1em; font-weight: 600; border: 1px solid #eee; margin-bottom: 1em;'>
+            Choose a check to run using the buttons above.
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
 
 
 if __name__ == "__main__":
