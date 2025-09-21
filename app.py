@@ -13,7 +13,6 @@ from openpyxl.styles import PatternFill, Alignment
 # Configuration
 # -----------------------------
 EXPECTED_COLUMNS = [
-    "macroid",
     "asset_type",
     "asset_name",
     "final_value",
