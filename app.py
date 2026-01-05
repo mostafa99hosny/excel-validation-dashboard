@@ -123,11 +123,6 @@ def parse_and_format_date(value: Any) -> Tuple[bool, str | None]:
     except Exception:
         return False, None
 
-
-# -----------------------------
-# Validation functions
-# -----------------------------
-
 def check_missing_columns(df: pd.DataFrame) -> List[str]:
     missing = [c for c in EXPECTED_COLUMNS if c not in df.columns]
     return missing
